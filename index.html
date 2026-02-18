@@ -109,7 +109,7 @@ button:active{
 }
 
 .gallery span:hover {
-    transform: scale(1.5) rotate(15deg);
+    transform: scale(1.6) rotate(15deg);
 }
 
 .bouquet{
@@ -138,12 +138,15 @@ button:active{
     to{transform:translateY(100vh);opacity:0;}
 }
 
+/* Animasi Getar Password Salah */
 @keyframes shake {
     0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-10px); }
-    75% { transform: translateX(10px); }
+    20%, 60% { transform: translateX(-10px); }
+    40%, 80% { transform: translateX(10px); }
 }
-.shake-card { animation: shake 0.3s ease-in-out; }
+.shake-card { 
+    animation: shake 0.4s ease-in-out; 
+}
 
 </style>
 </head>
@@ -190,15 +193,18 @@ let wrongCount=0;
 function checkPass(){
     document.getElementById("clickSound").play();
     const input=document.getElementById("pass").value;
+    const lockCard = document.getElementById("lock");
 
     if(input===realPass){
-        document.getElementById("lock").style.display="none";
+        lockCard.style.display="none";
         document.getElementById("content").style.display="block";
     } else {
         wrongCount++;
-        const lockCard = document.getElementById("lock");
+        
+        // Trigger Animasi Getar
+        lockCard.classList.remove('shake-card');
+        void lockCard.offsetWidth; // Reset animasi
         lockCard.classList.add('shake-card');
-        setTimeout(() => lockCard.classList.remove('shake-card'), 300);
         
         document.getElementById("wrong").style.display="block";
         if(wrongCount>=3){
@@ -243,12 +249,17 @@ function startTyping(){
         } else {
             gallery.style.display = "flex";
             isTyping = false;
-            createExplosion();
+            
+            // Jeda 5 detik setelah teks beres, baru HUJAN EMOJI!
+            setTimeout(() => {
+                createExplosion();
+            }, 5000); 
         }
     }
     type();
 }
 
+// Klik layar keluar hati
 document.addEventListener("click", function(e){
     const heart = document.createElement("div");
     heart.className = "heart";
@@ -256,25 +267,24 @@ document.addEventListener("click", function(e){
     heart.style.left = e.clientX + "px";
     heart.style.top = e.clientY + "px";
     document.body.appendChild(heart);
-
     setTimeout(() => heart.remove(), 3000);
 });
 
+// Fungsi hujan emoji otomatis
 function createExplosion() {
-    for(let i=0; i<20; i++) {
+    for(let i=0; i<35; i++) {
         setTimeout(() => {
             const heart = document.createElement("div");
             heart.className = "heart";
-            heart.innerHTML = ["🌸","✨","💖","🍭","🎀"][Math.floor(Math.random()*5)];
+            heart.innerHTML = ["🌸","✨","💖","🍭","🎀","🌷","⭐"][Math.floor(Math.random()*7)];
             heart.style.left = Math.random() * 100 + "vw";
             heart.style.top = "100vh";
             document.body.appendChild(heart);
             setTimeout(() => heart.remove(), 3000);
-        }, i * 150);
+        }, i * 100);
     }
 }
 </script>
 
 </body>
-    </html>
-    
+</html>
