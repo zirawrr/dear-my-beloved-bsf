@@ -11,88 +11,119 @@
 <style>
 
 body{
-font-family:'Poppins',sans-serif;
-margin:0;
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-overflow:hidden;
-padding:20px;
-animation:bgMove 12s infinite alternate;
-background:linear-gradient(120deg,#ff9ecb,#ffdca8,#ffc2d1,#ffe6a7);
-background-size:300% 300%;
+    font-family:'Poppins',sans-serif;
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    background:linear-gradient(270deg,#ffd6e7,#ffeccf,#ffd1dc,#ffe9f3);
+    background-size:400% 400%;
+    animation:bgMove 12s ease infinite;
 }
 
 @keyframes bgMove{
-0%{background-position:left}
-100%{background-position:right}
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+/* glitter */
+body::before{
+    content:"";
+    position:absolute;
+    width:200%;
+    height:200%;
+    background-image:radial-gradient(white 1px, transparent 1px);
+    background-size:35px 35px;
+    animation:glitter 8s linear infinite;
+    opacity:0.4;
+}
+
+@keyframes glitter{
+    from{transform:translateY(0);}
+    to{transform:translateY(-200px);}
 }
 
 /* card */
 .card{
-position:relative;
-z-index:2;
-width:100%;
-max-width:420px;
-background:white;
-padding:30px;
-border-radius:22px;
-text-align:center;
-box-shadow:0 15px 40px rgba(0,0,0,0.15);
+    position:relative;
+    width:100%;
+    max-width:420px;
+    background:white;
+    padding:30px;
+    border-radius:22px;
+    text-align:center;
+    box-shadow:0 15px 40px rgba(0,0,0,0.15);
+    z-index:5;
 }
 
-/* glow */
 h1{
-color:#ff5c8a;
-text-shadow:0 0 10px rgba(255,92,138,0.4);
+    color:#ff5c8a;
+    text-shadow:0 0 10px rgba(255,92,138,0.4);
 }
 
 input{
-width:100%;
-padding:12px;
-border-radius:15px;
-border:1px solid #ddd;
-margin-top:15px;
+    width:100%;
+    padding:12px;
+    border-radius:15px;
+    border:1px solid #ddd;
+    margin-top:15px;
 }
 
 button{
-background:#ff5c8a;
-border:none;
-padding:12px 25px;
-border-radius:20px;
-color:white;
-font-size:16px;
-margin-top:15px;
+    background:#ff5c8a;
+    border:none;
+    padding:12px 25px;
+    border-radius:20px;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    margin-top:15px;
 }
 
 .message{
-margin-top:20px;
-font-size:17px;
-min-height:110px;
+    margin-top:20px;
+    font-size:17px;
+    color:#444;
+    min-height:110px;
 }
 
 .gallery{
-margin-top:18px;
-display:none;
-gap:10px;
-justify-content:center;
+    margin-top:18px;
+    display:none;
+    gap:10px;
+    justify-content:center;
 }
 
 .gallery span{font-size:26px;}
 
-/* heart jatuh */
+/* floating bouquet */
+.bouquet{
+    position:absolute;
+    width:120px;
+    animation:float 6s ease-in-out infinite;
+    opacity:0.9;
+    z-index:1;
+}
+
+@keyframes float{
+    0%{transform:translateY(0);}
+    50%{transform:translateY(-25px);}
+    100%{transform:translateY(0);}
+}
+
+/* heart */
 .heart{
-position:fixed;
-font-size:20px;
-animation:fall 4s linear forwards;
-pointer-events:none;
-z-index:10;
+    position:absolute;
+    font-size:22px;
+    animation:fall 3s linear forwards;
 }
 
 @keyframes fall{
-0%{transform:translateY(-10vh);opacity:1}
-100%{transform:translateY(110vh);opacity:0}
+    from{transform:translateY(-50px);opacity:1;}
+    to{transform:translateY(100vh);opacity:0;}
 }
 
 </style>
@@ -100,30 +131,31 @@ z-index:10;
 
 <body>
 
-<!-- youtube music -->
-<iframe id="ytMusic"
-width="0"
-height="0"
-src=""
-frameborder="0"
-allow="autoplay">
-</iframe>
-
 <!-- klik sound -->
 <audio id="clickSound">
-<source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_c6ccf2a0b7.mp3" type="audio/mp3">
+<source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_c6ccf2a0b7.mp3?filename=click-124467.mp3">
 </audio>
 
+<!-- YOUTUBE MUSIC -->
+<iframe id="ytmusic" width="0" height="0"
+src="https://www.youtube.com/embed/atYNqvZcQ3M?start=15&autoplay=0&loop=1&playlist=atYNqvZcQ3M">
+</iframe>
+
+<!-- floating photos -->
+<img src="bouquet.png" class="bouquet" style="top:10%;left:5%;">
+<img src="bouquet.png" class="bouquet" style="bottom:10%;right:5%;">
+<img src="bouquet.png" class="bouquet" style="top:40%;right:10%;">
+
 <div class="card" id="lock">
-<h2>🔒 enter password</h2>
-<input type="password" id="pass">
+<h2>🔒 enter password dulu</h2>
+<input type="password" id="pass" placeholder="password...">
 <button onclick="checkPass()">open</button>
-<p id="wrong" style="color:red;display:none;">salaa pass woy 😾</p>
+<p id="wrong" style="color:red;display:none;">sala pass nya sala uu 😾</p>
 </div>
 
 <div class="card" id="content" style="display:none;">
-<h1>For You 💌</h1>
-<button onclick="startTyping()">open message</button>
+<h1>for uuuu 💌</h1>
+<button onclick="startTyping()">pencet pencet</button>
 
 <div class="message" id="text"></div>
 
@@ -142,30 +174,31 @@ let wrongCount=0;
 
 function checkPass(){
 document.getElementById("clickSound").play();
-let input=document.getElementById("pass").value;
+
+const input=document.getElementById("pass").value;
 
 if(input===realPass){
 document.getElementById("lock").style.display="none";
 document.getElementById("content").style.display="block";
-
-/* trigger youtube music dari detik 15 */
-document.getElementById("ytMusic").src=
-"https://www.youtube.com/embed/atYNqvZcQ3M?autoplay=1&start=15&loop=1&playlist=atYNqvZcQ3M";
-
+document.getElementById("ytmusic").src+="&autoplay=1";
 }else{
 wrongCount++;
 document.getElementById("wrong").style.display="block";
+
+if(wrongCount>=3){
+alert("KIJAA YG BENER IIII 😾");
+}
 }
 }
 
 const msg=`saayang, aku mau akhirin our relationship with a warmer greet, hihi.
 😊 Oo, ooo oo oo! 😄 Oo ooo ooo! 🫰🏻
 
-I love you so much.
-I hope in this ramadan month, we can be much better people.
+I love you sooooo much.
+I hope in this ramadan month, we can be much better.
 
-I will miss you so much.
-Ciao, my beloved bsf 🌷`;
+I will miss u so muchh.
+Ciao, my beloved bsf (aw bsf xixi)🌷`;
 
 let i=0;
 
@@ -187,15 +220,16 @@ gallery.style.display="flex";
 type();
 }
 
-/* heart jatuh tiap tap layar */
+/* heart tap */
 document.addEventListener("click",function(e){
-let heart=document.createElement("div");
+const heart=document.createElement("div");
 heart.className="heart";
 heart.innerHTML="💗";
 heart.style.left=e.clientX+"px";
+heart.style.top=e.clientY+"px";
 document.body.appendChild(heart);
 
-setTimeout(()=>heart.remove(),4000);
+setTimeout(()=>heart.remove(),3000);
 });
 
 </script>
