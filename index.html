@@ -132,6 +132,7 @@ button:hover { transform: scale(1.05); background: #ff477e; }
 <script>
 const realPass = "jirajaki";
 let score = 0;
+let wrongCount = 0; // Menghitung jumlah salah input
 const targetScore = 5;
 
 // Link SFX Chicken (Raw GitHub)
@@ -141,14 +142,24 @@ function checkPass(){
     document.getElementById("clickSound").play();
     const input = document.getElementById("pass").value;
     const lockCard = document.getElementById("lock");
+    const wrongMsg = document.getElementById("wrong");
+
     if(input === realPass){
         lockCard.style.display = "none";
         document.getElementById("content").style.display = "block";
     } else {
+        wrongCount++;
         lockCard.classList.remove('shake-card');
         void lockCard.offsetWidth;
         lockCard.classList.add('shake-card');
-        document.getElementById("wrong").style.display = "block";
+        wrongMsg.style.display = "block";
+
+        // Cek jika sudah lebih dari 3 kali salah
+        if(wrongCount > 3) {
+            wrongMsg.innerHTML = "kijaa yang benerr ih 😾";
+        } else {
+            wrongMsg.innerHTML = "sala pass nya sala uu 😼";
+        }
     }
 }
 
@@ -204,7 +215,6 @@ function startMiniGame() {
 
 function moveTarget() {
     const target = document.getElementById("game-target");
-    // Area aman supaya gak ketutup card (tengah)
     const x = Math.random() * (window.innerWidth - 100);
     const y = Math.random() * (window.innerHeight - 100);
     target.style.left = x + "px";
@@ -213,7 +223,6 @@ function moveTarget() {
 
 function catchTarget() {
     score++;
-    // Mainkan SFX Chicken
     catchSfx.currentTime = 0;
     catchSfx.play();
     
@@ -227,7 +236,7 @@ function catchTarget() {
         } else {
             target.style.display = "none";
             document.getElementById("title").innerHTML = "YOU WON! 🏆";
-            document.getElementById("text").innerHTML = "i just wanted to say, i love you cees. \n\nmakasii udaa mainin sampai akhir ya sayang!";
+            document.getElementById("text").innerHTML = "i just wanted to say, love youu cees. \n\nmakasii udaa mainin sampai akhir ya say- eh..cees.!";
             createExplosion();
         }
     }, 150);
