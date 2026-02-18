@@ -91,7 +91,7 @@ button:active{
     font-size:17px;
     color:#444;
     min-height:110px;
-    white-space: pre-line;
+    white-space: pre-line; /* Biar baris baru kebaca */
 }
 
 .gallery{
@@ -137,39 +137,40 @@ button:active{
 <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_c6ccf2a0b7.mp3?filename=click-124467.mp3">
 </audio>
 
-<iframe id="ytmusic" width="0" height="0" 
-src="https://www.youtube.com/embed/atYNqvZcQ3M?enablejsapi=1" 
-frameborder="0" allow="autoplay">
-</iframe>
+<audio id="mainMusic" loop>
+<source src="https://files.catbox.moe/978f8v.mp3" type="audio/mpeg">
+</audio>
 
 <img src="bouquet.png" class="bouquet" style="top:10%;left:5%;">
 <img src="bouquet.png" class="bouquet" style="bottom:10%;right:5%;">
 <img src="bouquet.png" class="bouquet" style="top:40%;right:10%;">
 
 <div class="card" id="lock">
-<h2>🔒 enter password dulu</h2>
-<input type="password" id="pass" placeholder="password...">
-<button onclick="checkPass()">open</button>
-<p id="wrong" style="color:red;display:none;">sala pass nya sala uu 😾</p>
+    <h2>🔒 enter password dulu</h2>
+    <input type="password" id="pass" placeholder="password...">
+    <button onclick="checkPass()">open</button>
+    <p id="wrong" style="color:red;display:none;">sala pass nya sala uu 😾</p>
 </div>
 
 <div class="card" id="content" style="display:none;">
-<h1>for uuuu 💌</h1>
-<button onclick="startTyping()">pencet pencet</button>
+    <h1>for uuuu 💌</h1>
+    <button id="btnPlay" onclick="startTyping()">pencet pencet</button>
 
-<div class="message" id="text"></div>
+    <div class="message" id="text"></div>
 
-<div class="gallery" id="gal">
-<span>🐱</span>
-<span>🌙</span>
-<span>💗</span>
-<span>✨</span>
-</div>
+    <div class="gallery" id="gal">
+        <span>🐱</span>
+        <span>🌙</span>
+        <span>💗</span>
+        <span>✨</span>
+    </div>
 </div>
 
 <script>
 const realPass="jirajaki";
 let wrongCount=0;
+let i=0;
+let isTyping = false;
 
 function checkPass(){
     document.getElementById("clickSound").play();
@@ -196,31 +197,32 @@ I hope in this ramadan month, we can be much better.
 I will miss u so muchh.
 Ciao, my beloved bsf (aw bsf xixi)🌷`;
 
-let i=0;
-let isTyping = false;
-
 function startTyping(){
     // Putar sound klik
     document.getElementById("clickSound").play();
 
-    // TRIGGER AUDIO YOUTUBE DI SINI
-    const yt = document.getElementById("ytmusic");
-    yt.src = "https://www.youtube.com/embed/atYNqvZcQ3M?autoplay=1&loop=1&playlist=atYNqvZcQ3M&start=15";
+    // SETUP MUSIK UTAMA
+    const musik = document.getElementById("mainMusic");
+    musik.currentTime = 15; // MULAI DARI DETIK 15
+    musik.play();
 
-    if(isTyping) return; // Mencegah klik ganda saat ngetik
+    if(isTyping) return;
     isTyping = true;
+
+    // Sembunyikan tombol biar fokus ke teks
+    document.getElementById("btnPlay").style.display = "none";
 
     const textBox=document.getElementById("text");
     const gallery=document.getElementById("gal");
     
-    textBox.innerHTML = ""; // Bersihkan teks lama
+    textBox.innerHTML = "";
     i = 0;
 
     function type(){
         if(i < msg.length){
             textBox.innerHTML += msg.charAt(i);
             i++;
-            setTimeout(type, 30);
+            setTimeout(type, 35);
         } else {
             gallery.style.display = "flex";
             isTyping = false;
@@ -243,3 +245,4 @@ document.addEventListener("click",function(e){
 
 </body>
 </html>
+q
