@@ -9,7 +9,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
-
 body{
     font-family:'Poppins',sans-serif;
     margin:0;
@@ -29,7 +28,6 @@ body{
     100%{background-position:0% 50%;}
 }
 
-/* glitter */
 body::before{
     content:"";
     position:absolute;
@@ -46,7 +44,6 @@ body::before{
     to{transform:translateY(-200px);}
 }
 
-/* card */
 .card{
     position:relative;
     width:100%;
@@ -70,6 +67,7 @@ input{
     border-radius:15px;
     border:1px solid #ddd;
     margin-top:15px;
+    box-sizing: border-box;
 }
 
 button{
@@ -81,6 +79,11 @@ button{
     font-size:16px;
     cursor:pointer;
     margin-top:15px;
+    transition: 0.3s;
+}
+
+button:active{
+    transform: scale(0.95);
 }
 
 .message{
@@ -88,6 +91,7 @@ button{
     font-size:17px;
     color:#444;
     min-height:110px;
+    white-space: pre-line;
 }
 
 .gallery{
@@ -99,7 +103,6 @@ button{
 
 .gallery span{font-size:26px;}
 
-/* floating bouquet */
 .bouquet{
     position:absolute;
     width:120px;
@@ -114,10 +117,10 @@ button{
     100%{transform:translateY(0);}
 }
 
-/* heart */
 .heart{
     position:absolute;
     font-size:22px;
+    pointer-events: none;
     animation:fall 3s linear forwards;
 }
 
@@ -125,23 +128,20 @@ button{
     from{transform:translateY(-50px);opacity:1;}
     to{transform:translateY(100vh);opacity:0;}
 }
-
 </style>
 </head>
 
 <body>
 
-<!-- klik sound -->
 <audio id="clickSound">
 <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_c6ccf2a0b7.mp3?filename=click-124467.mp3">
 </audio>
 
-<!-- YOUTUBE MUSIC -->
-<iframe id="ytmusic" width="0" height="0"
-src="https://www.youtube.com/embed/atYNqvZcQ3M?start=15&autoplay=0&loop=1&playlist=atYNqvZcQ3M">
+<iframe id="ytmusic" width="0" height="0" 
+src="https://www.youtube.com/embed/atYNqvZcQ3M?enablejsapi=1" 
+frameborder="0" allow="autoplay">
 </iframe>
 
-<!-- floating photos -->
 <img src="bouquet.png" class="bouquet" style="top:10%;left:5%;">
 <img src="bouquet.png" class="bouquet" style="bottom:10%;right:5%;">
 <img src="bouquet.png" class="bouquet" style="top:40%;right:10%;">
@@ -168,27 +168,23 @@ src="https://www.youtube.com/embed/atYNqvZcQ3M?start=15&autoplay=0&loop=1&playli
 </div>
 
 <script>
-
 const realPass="jirajaki";
 let wrongCount=0;
 
 function checkPass(){
-document.getElementById("clickSound").play();
+    document.getElementById("clickSound").play();
+    const input=document.getElementById("pass").value;
 
-const input=document.getElementById("pass").value;
-
-if(input===realPass){
-document.getElementById("lock").style.display="none";
-document.getElementById("content").style.display="block";
-document.getElementById("ytmusic").src+="&autoplay=1";
-}else{
-wrongCount++;
-document.getElementById("wrong").style.display="block";
-
-if(wrongCount>=3){
-alert("KIJAA YG BENER IIII 😾");
-}
-}
+    if(input===realPass){
+        document.getElementById("lock").style.display="none";
+        document.getElementById("content").style.display="block";
+    }else{
+        wrongCount++;
+        document.getElementById("wrong").style.display="block";
+        if(wrongCount>=3){
+            alert("KIJAA YG BENER IIII 😾");
+        }
+    }
 }
 
 const msg=`saayang, aku mau akhirin our relationship with a warmer greet, hihi.
@@ -201,37 +197,48 @@ I will miss u so muchh.
 Ciao, my beloved bsf (aw bsf xixi)🌷`;
 
 let i=0;
+let isTyping = false;
 
 function startTyping(){
-document.getElementById("clickSound").play();
+    // Putar sound klik
+    document.getElementById("clickSound").play();
 
-const textBox=document.getElementById("text");
-const gallery=document.getElementById("gal");
+    // TRIGGER AUDIO YOUTUBE DI SINI
+    const yt = document.getElementById("ytmusic");
+    yt.src = "https://www.youtube.com/embed/atYNqvZcQ3M?autoplay=1&loop=1&playlist=atYNqvZcQ3M&start=15";
 
-function type(){
-if(i<msg.length){
-textBox.innerHTML+=msg.charAt(i);
-i++;
-setTimeout(type,30);
-}else{
-gallery.style.display="flex";
-}
-}
-type();
+    if(isTyping) return; // Mencegah klik ganda saat ngetik
+    isTyping = true;
+
+    const textBox=document.getElementById("text");
+    const gallery=document.getElementById("gal");
+    
+    textBox.innerHTML = ""; // Bersihkan teks lama
+    i = 0;
+
+    function type(){
+        if(i < msg.length){
+            textBox.innerHTML += msg.charAt(i);
+            i++;
+            setTimeout(type, 30);
+        } else {
+            gallery.style.display = "flex";
+            isTyping = false;
+        }
+    }
+    type();
 }
 
-/* heart tap */
 document.addEventListener("click",function(e){
-const heart=document.createElement("div");
-heart.className="heart";
-heart.innerHTML="💗";
-heart.style.left=e.clientX+"px";
-heart.style.top=e.clientY+"px";
-document.body.appendChild(heart);
+    const heart=document.createElement("div");
+    heart.className="heart";
+    heart.innerHTML="💗";
+    heart.style.left=e.clientX+"px";
+    heart.style.top=e.clientY+"px";
+    document.body.appendChild(heart);
 
-setTimeout(()=>heart.remove(),3000);
+    setTimeout(()=>heart.remove(),3000);
 });
-
 </script>
 
 </body>
