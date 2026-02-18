@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
 <title>Secret Page 🔒</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
@@ -28,25 +26,9 @@ body{
     100%{background-position:0% 50%;}
 }
 
-body::before{
-    content:"";
-    position:absolute;
-    width:200%;
-    height:200%;
-    background-image:radial-gradient(white 1px, transparent 1px);
-    background-size:35px 35px;
-    animation:glitter 8s linear infinite;
-    opacity:0.4;
-}
-
-@keyframes glitter{
-    from{transform:translateY(0);}
-    to{transform:translateY(-200px);}
-}
-
 .card{
     position:relative;
-    width:100%;
+    width:90%;
     max-width:420px;
     background:white;
     padding:30px;
@@ -56,74 +38,31 @@ body::before{
     z-index:5;
 }
 
-h1{
-    color:#ff5c8a;
-    text-shadow:0 0 10px rgba(255,92,138,0.4);
-}
+h1{ color:#ff5c8a; }
+input{ width:100%; padding:12px; border-radius:15px; border:1px solid #ddd; margin-top:15px; box-sizing: border-box; }
+button{ background:#ff5c8a; border:none; padding:12px 25px; border-radius:20px; color:white; font-size:16px; cursor:pointer; margin-top:15px; }
 
-input{
-    width:100%;
-    padding:12px;
-    border-radius:15px;
-    border:1px solid #ddd;
-    margin-top:15px;
-    box-sizing: border-box;
-}
+.message{ margin-top:20px; font-size:17px; color:#444; min-height:110px; white-space: pre-line; }
+.gallery{ margin-top:18px; display:none; gap:10px; justify-content:center; }
+.gallery span{ font-size:26px; cursor: pointer; }
 
-button{
-    background:#ff5c8a;
-    border:none;
-    padding:12px 25px;
-    border-radius:20px;
-    color:white;
-    font-size:16px;
-    cursor:pointer;
-    margin-top:15px;
-    transition: 0.3s;
+/* Efek Getar */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
 }
+.shake-card { animation: shake 0.3s ease-in-out; }
 
-button:active{
-    transform: scale(0.95);
-}
-
-.message{
-    margin-top:20px;
-    font-size:17px;
-    color:#444;
-    min-height:110px;
-    white-space: pre-line;
-}
-
-.gallery{
-    margin-top:18px;
-    display:none;
-    gap:10px;
-    justify-content:center;
-}
-
-.gallery span{
-    font-size:26px;
+/* Objek Game */
+#game-target {
+    position: absolute;
+    font-size: 40px;
     cursor: pointer;
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    display: inline-block;
-}
-
-.gallery span:hover {
-    transform: scale(1.6) rotate(15deg);
-}
-
-.bouquet{
-    position:absolute;
-    width:120px;
-    animation:float 6s ease-in-out infinite;
-    opacity:0.9;
-    z-index:1;
-}
-
-@keyframes float{
-    0%{transform:translateY(0);}
-    50%{transform:translateY(-25px);}
-    100%{transform:translateY(0);}
+    z-index: 10;
+    display: none;
+    user-select: none;
+    transition: all 0.2s ease;
 }
 
 .heart{
@@ -132,84 +71,53 @@ button:active{
     pointer-events: none;
     animation:fall 3s linear forwards;
 }
-
 @keyframes fall{
     from{transform:translateY(-50px);opacity:1;}
     to{transform:translateY(100vh);opacity:0;}
 }
-
-/* Animasi Getar Password Salah */
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    20%, 60% { transform: translateX(-10px); }
-    40%, 80% { transform: translateX(10px); }
-}
-.shake-card { 
-    animation: shake 0.4s ease-in-out; 
-}
-
 </style>
 </head>
 
 <body>
 
-<audio id="clickSound">
-  <source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_c6ccf2a0b7.mp3?filename=click-124467.mp3">
-</audio>
+<audio id="clickSound"><source src="https://cdn.pixabay.com/download/audio/2022/03/10/audio_c6ccf2a0b7.mp3?filename=click-124467.mp3"></audio>
+<audio id="bgMusic"><source src="https://raw.githubusercontent.com/zirawrr/dear-my-beloved-bsf/main/arctic.mp3" type="audio/mpeg"></audio>
 
-<audio id="bgMusic">
-  <source src="https://raw.githubusercontent.com/zirawrr/dear-my-beloved-bsf/main/arctic.mp3" type="audio/mpeg">
-</audio>
-
-<img src="bouquet.png" class="bouquet" style="top:10%;left:5%;">
-<img src="bouquet.png" class="bouquet" style="bottom:10%;right:5%;">
-<img src="bouquet.png" class="bouquet" style="top:40%;right:10%;">
+<div id="game-target" onclick="catchTarget()">🐱</div>
 
 <div class="card" id="lock">
-<h2>🔒 enter password dulu</h2>
-<input type="password" id="pass" placeholder="password...">
-<button onclick="checkPass()">open</button>
-<p id="wrong" style="color:red;display:none;">sala pass nya sala uu 😾</p>
+    <h2>🔒 enter password dulu</h2>
+    <input type="password" id="pass" placeholder="password...">
+    <button onclick="checkPass()">open</button>
+    <p id="wrong" style="color:red;display:none;">sala pass nya sala uu 😾</p>
 </div>
 
 <div class="card" id="content" style="display:none;">
-<h1>for uuuu 💌</h1>
-<button onclick="startTyping()">pencet pencet</button>
-
-<div class="message" id="text"></div>
-
-<div class="gallery" id="gal">
-<span>🐱</span>
-<span>🌙</span>
-<span>💗</span>
-<span>✨</span>
-</div>
+    <h1 id="title">for uuuu 💌</h1>
+    <button id="startBtn" onclick="startTyping()">pencet pencet</button>
+    <div class="message" id="text"></div>
+    <div class="gallery" id="gal"><span>🐱</span><span>🌙</span><span>💗</span><span>✨</span></div>
 </div>
 
 <script>
 const realPass="jirajaki";
 let wrongCount=0;
+let score = 0;
+const targetScore = 5;
 
 function checkPass(){
     document.getElementById("clickSound").play();
     const input=document.getElementById("pass").value;
     const lockCard = document.getElementById("lock");
-
     if(input===realPass){
         lockCard.style.display="none";
         document.getElementById("content").style.display="block";
     } else {
         wrongCount++;
-        
-        // Trigger Animasi Getar
         lockCard.classList.remove('shake-card');
-        void lockCard.offsetWidth; // Reset animasi
+        void lockCard.offsetWidth;
         lockCard.classList.add('shake-card');
-        
         document.getElementById("wrong").style.display="block";
-        if(wrongCount>=3){
-            alert("KIJAA YG BENER IIII 😾");
-        }
     }
 }
 
@@ -227,17 +135,15 @@ let isTyping = false;
 
 function startTyping(){
     document.getElementById("clickSound").play();
-
     const music = document.getElementById("bgMusic");
     music.currentTime = 15;
     music.play();
-
     if(isTyping) return;
     isTyping = true;
-
+    document.getElementById("startBtn").style.display = "none";
+    
     const textBox=document.getElementById("text");
     const gallery=document.getElementById("gal");
-    
     textBox.innerHTML = "";
     i = 0;
 
@@ -245,21 +151,61 @@ function startTyping(){
         if(i < msg.length){
             textBox.innerHTML += msg.charAt(i);
             i++;
-            setTimeout(type, 30);
+            setTimeout(type, 35);
         } else {
             gallery.style.display = "flex";
             isTyping = false;
-            
-            // Jeda 5 detik setelah teks beres, baru HUJAN EMOJI!
+            // JEDA 5 DETIK SEBELUM LEDAKAN & GAME
             setTimeout(() => {
                 createExplosion();
-            }, 5000); 
+                startMiniGame();
+            }, 5000);
         }
     }
     type();
 }
 
-// Klik layar keluar hati
+function startMiniGame() {
+    alert("Eh bentar! Tangkap kochenng 5x buat hadiah terakhir! 😼");
+    moveTarget();
+    document.getElementById("game-target").style.display = "block";
+}
+
+function moveTarget() {
+    const target = document.getElementById("game-target");
+    const x = Math.random() * (window.innerWidth - 50);
+    const y = Math.random() * (window.innerHeight - 50);
+    target.style.left = x + "px";
+    target.style.top = y + "px";
+}
+
+function catchTarget() {
+    score++;
+    document.getElementById("clickSound").play();
+    if (score < targetScore) {
+        moveTarget();
+    } else {
+        document.getElementById("game-target").style.display = "none";
+        document.getElementById("title").innerHTML = "YOU WON! 🏆";
+        document.getElementById("text").innerHTML = "Selamat! Kamu dapet virtual hug paling hangat dari aku! 🤗💖\n\nMakasih udah mainin sampai akhir ya sayang!";
+        createExplosion(); // Rayakan kemenangan!
+    }
+}
+
+function createExplosion() {
+    for(let j=0; j<40; j++) {
+        setTimeout(() => {
+            const heart = document.createElement("div");
+            heart.className = "heart";
+            heart.innerHTML = ["🌸","✨","💖","🌷","⭐"][Math.floor(Math.random()*5)];
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.top = "100vh";
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 3000);
+        }, j * 100);
+    }
+}
+
 document.addEventListener("click", function(e){
     const heart = document.createElement("div");
     heart.className = "heart";
@@ -269,22 +215,6 @@ document.addEventListener("click", function(e){
     document.body.appendChild(heart);
     setTimeout(() => heart.remove(), 3000);
 });
-
-// Fungsi hujan emoji otomatis
-function createExplosion() {
-    for(let i=0; i<35; i++) {
-        setTimeout(() => {
-            const heart = document.createElement("div");
-            heart.className = "heart";
-            heart.innerHTML = ["🌸","✨","💖","🍭","🎀","🌷","⭐"][Math.floor(Math.random()*7)];
-            heart.style.left = Math.random() * 100 + "vw";
-            heart.style.top = "100vh";
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 3000);
-        }, i * 100);
-    }
-}
 </script>
-
 </body>
 </html>
