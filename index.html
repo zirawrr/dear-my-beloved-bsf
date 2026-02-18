@@ -128,6 +128,36 @@ button:active{
     from{transform:translateY(-50px);opacity:1;}
     to{transform:translateY(100vh);opacity:0;}
 }
+
+/* Efek getar saat salah password */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+.shake { animation: shake 0.3s ease-in-out; }
+
+/* Animasi hover untuk emoji */
+.gallery span {
+    font-size: 26px;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: inline-block;
+}
+.gallery span:hover {
+    transform: scale(1.5) rotate(15deg);
+}
+
+/* Tombol kejutan di akhir */
+#surpriseBtn {
+    display: none;
+    margin-top: 15px;
+    background: #ffb7b2;
+    border: 2px dashed #ff5c8a;
+    color: #ff5c8a;
+    font-weight: bold;
+    }
+    
 </style>
 </head>
 
@@ -174,11 +204,16 @@ function checkPass(){
     document.getElementById("clickSound").play();
     const input=document.getElementById("pass").value;
 
-    if(input===realPass){
+        if(input===realPass){
         document.getElementById("lock").style.display="none";
         document.getElementById("content").style.display="block";
-    }else{
+    } else {
         wrongCount++;
+        // --- TAMBAHKAN 3 BARIS INI ---
+        const lockCard = document.getElementById("lock");
+        lockCard.classList.add('shake-card');
+        setTimeout(() => lockCard.classList.remove('shake-card'), 300);
+        
         document.getElementById("wrong").style.display="block";
         if(wrongCount>=3){
             alert("KIJAA YG BENER IIII 😾");
@@ -216,7 +251,7 @@ function startTyping(){
     textBox.innerHTML = ""; // Bersihkan teks lama
     i = 0;
 
-    function type(){
+            function type(){
         if(i < msg.length){
             textBox.innerHTML += msg.charAt(i);
             i++;
@@ -224,22 +259,41 @@ function startTyping(){
         } else {
             gallery.style.display = "flex";
             isTyping = false;
+            // Ini yang bikin layar rame pas teks beres
+            createExplosion();
         }
     }
     type();
 }
 
-document.addEventListener("click",function(e){
-    const heart=document.createElement("div");
-    heart.className="heart";
-    heart.innerHTML="💗";
-    heart.style.left=e.clientX+"px";
-    heart.style.top=e.clientY+"px";
+// Efek muncul hati pas layar di-klik
+document.addEventListener("click", function(e){
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "💗";
+    heart.style.left = e.clientX + "px";
+    heart.style.top = e.clientY + "px";
     document.body.appendChild(heart);
 
-    setTimeout(()=>heart.remove(),3000);
+    setTimeout(() => heart.remove(), 3000);
 });
+
+// Resep "Ledakan" Emoji pas teks selesai ngetik
+function createExplosion() {
+    for(let i=0; i<20; i++) {
+        setTimeout(() => {
+            const heart = document.createElement("div");
+            heart.className = "heart";
+            // Variasi emoji biar lucu
+            heart.innerHTML = ["🌸","✨","💖","🍭","🎀"][Math.floor(Math.random()*5)];
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.top = "100vh";
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 3000);
+        }, i * 150);
+    }
+}
 </script>
 
 </body>
-    </html>
+</html>
